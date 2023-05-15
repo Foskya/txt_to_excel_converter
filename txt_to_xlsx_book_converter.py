@@ -6,7 +6,7 @@ import sys
 import random
 
 
-MAXIMUM_WORDS_PER_CELL = 15 # edit this to set the amout of words you want contained in a cell
+MAXIMUM_WORDS_PER_CELL = 20 # edit this to set the amout of words you want contained in a cell
 
 
 ## INPUT FILE SELECTION ##
@@ -53,9 +53,10 @@ def dataframe_book_column_writer(input_file):
     return df
 
 def dataframe_filler_columns_writer(df):
-    random_values = [random.random() for _ in range(len(df))]
-    df['RANDOM_COLUMN'] = random_values
-    df['DERIVATIVE_COLUMN'] = df['RANDOM_COLUMN'] * 2
+    random_result_touple = ("a", "b", "c")
+    df['FILLER_1'] = df.apply(lambda x: random.choices(random_result_touple, weights=(5, 65, 30), k=1)[0], axis=1)
+    df['FILLER_2'] = df['FILLER_1'].apply(lambda x: str(random.randint(1, 10)) if x == 'a' else "not_a")
+    #df['FILLER3'] = df['FILLER_2'] * 2
 
 def file_excel_writer(excel_name, df):
     writer = ExcelWriter(excel_name + ".xlsx")
@@ -71,5 +72,3 @@ print(input_file[:-4])
 df = dataframe_book_column_writer(input_file)
 dataframe_filler_columns_writer(df)
 file_excel_writer(input_file[:-4], df)
-print("\ndone")
-time.sleep(60)
